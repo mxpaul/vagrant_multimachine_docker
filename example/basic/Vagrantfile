@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "ubuntu/trusty64"
+  config.vm.hostname = "vagranthost"
+
+  config.vm.synced_folder "../../code/", "/home/vagrant/code", disabled: false,
+    create: true,
+    id: "code"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "512"]
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+
+
+  ###########################################################
+  ## Ability to run locally slightly different steps
+  ###########################################################
+  env_name = ENV["ENV_COPY_DOTFILES"]
+  if env_name.respond_to?(:to_str) && env_name.eql?("yes")
+    config.vm.provision "file", source: "~/.gitconfig", destination: ".gitconfig"
+    config.vm.provision "file", source: "~/.bash_profile", destination: ".bash_profile"
+    config.vm.provision "file", source: "~/.bashrc", destination: ".bashrc"
+    config.vm.provision "file", source: "~/.vimrc", destination: ".vimrc"
+  end
+  ###########################################################
+
+end
+

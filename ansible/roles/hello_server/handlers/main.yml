@@ -1,0 +1,8 @@
+---
+
+- name: restart hello_server
+  systemd: 
+    state: restarted
+    name: hello_server
+  become: yes
+  tags: [ "hello_server" ]

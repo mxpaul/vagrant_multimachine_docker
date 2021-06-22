@@ -1,0 +1,7 @@
+---
+dotfile_src_dir: dotfiles
+dotfiles_files:
+  - .bashrc
+  - .vimrc
+  - .tmux.conf
+  - .gitconfig

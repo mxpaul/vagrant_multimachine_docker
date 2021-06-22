@@ -1,0 +1,13 @@
+---
+use_google_dns: false
+install_apt_pkgs:
+  - apt-file
+  - net-tools
+  - tree
+  - vim
+  - tmux
+install_yum_pkgs:
+  - tree
+  - vim
+  - net-tools
+  - tmux

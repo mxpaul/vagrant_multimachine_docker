@@ -1,0 +1,31 @@
+---
+
+- name: "HELLO SERVER: build binary"
+  shell: 
+    cmd: make -C /vagrant build
+    creates: /vagrant/hello_server
+  tags: [ "hello_server" ]
+
+- name: "HELLO SERVER: install binary"
+  shell: 
+    cmd: make -C /vagrant install
+    creates: /usr/local/bin/hello_server
+  become: yes
+  notify:
+    - restart hello_server
+  tags: [ "hello_server" ]
+
+- name: "HELLO SERVER: service file"
+  template:
+    src: "{{ role_path }}/files/hello_server.service"
+    dest: "/etc/systemd/system/hello_server.service"
+    mode: 0755
+  become: yes
+  notify:
+    - restart hello_server
+  tags: [ "hello_server" ]
+
+- name: start hello_server service
+  systemd: state=started name=hello_server daemon_reload=yes
+  become: yes
+  tags: [ "hello_server" ]

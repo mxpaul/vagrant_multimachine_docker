@@ -1,0 +1,4 @@
+---
+devtools_pkgs:
+  - git
+  - make

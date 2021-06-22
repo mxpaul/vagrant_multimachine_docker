@@ -1,0 +1,25 @@
+---
+- name: "COMMON: Copy dotfiles"
+  template:
+    src: "{{ dotfile_src_dir }}/{{ item }}"
+    dest: "~/{{ item }}"
+    mode: 0600
+  with_items: "{{ dotfiles_files }}"
+  become: false
+- name: "COMMON: Use google dns"
+  copy: content="nameserver 8.8.8.8" dest=/etc/resolv.conf
+  become: true
+  when: use_google_dns|bool
+- name: "COMMON: Install apt packages"
+  apt:
+    name: "{{ install_apt_pkgs }}"
+    state: present
+    update_cache: true
+  become: true
+  when: ansible_os_family == 'Debian'
+- name: "COMMON: Install yum packages"
+  yum:
+    name: "{{ install_yum_pkgs }}"
+    state: present
+  become: true
+  when: ansible_os_family == 'RedHat'

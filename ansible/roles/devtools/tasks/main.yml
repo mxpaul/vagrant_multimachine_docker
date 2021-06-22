@@ -1,0 +1,14 @@
+- name: Install rpms
+  yum:
+    name: "{{ devtools_pkgs }}"
+    state: present
+    update_cache: false
+  become: true
+  when: ansible_os_family == 'RedHat'
+- name: Install debs
+  apt:
+    name: "{{ devtools_pkgs }}"
+    state: present
+    update_cache: false
+  become: true
+  when: ansible_os_family == 'Debian'
